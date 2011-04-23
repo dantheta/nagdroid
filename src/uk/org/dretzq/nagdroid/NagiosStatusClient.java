@@ -22,19 +22,19 @@ import org.xml.sax.SAXException;
 import android.util.Log;
 
 public class NagiosStatusClient {
-	private String url = "";
-	private String username = "";
-	private String password = ""; 
+	private String mUrl = "";
+	private String mUsername = "";
+	private String mPassword = ""; 
 
 	
-	public NagiosStatusClient(String pUrl, String pUsername, String pPassword) {
-		url = pUrl;
-		username = pUsername;
-		password = pPassword;
+	public NagiosStatusClient(String url, String username, String password) {
+		mUrl = url;
+		mUsername = username;
+		mPassword = password;
 	}
 	
 	public NagiosStatusClient(String pUrl) {
-		url = pUrl;
+		mUrl = pUrl;
 	}
 	
 	public NagiosStatusClient() {
@@ -44,14 +44,14 @@ public class NagiosStatusClient {
 	public Document getStatus() {
 		try {
 			DefaultHttpClient client = new DefaultHttpClient();
-			if (username != null && password != null) {
+			if (mUsername != null && mPassword != null) {
 							
 				client.getCredentialsProvider().setCredentials(
 					new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM),
-					new UsernamePasswordCredentials(username, password)
+					new UsernamePasswordCredentials(mUsername, mPassword)
 				);
 			}
-			HttpGet request = new HttpGet(url);
+			HttpGet request = new HttpGet(mUrl);
 			HttpResponse response = client.execute(request);
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			
