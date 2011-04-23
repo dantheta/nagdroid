@@ -1,19 +1,23 @@
 package uk.org.dretzq.nagdroid;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import android.util.Log;
 
@@ -54,9 +58,14 @@ public class NagiosStatusClient {
 			
 			Document doc = builder.parse(response.getEntity().getContent());
 			return doc;
-		} catch (Exception e) {
-			return null;
+		} catch (ClientProtocolException e) {
+			Log.e("neterror", e.toString());
+		} catch (IOException e) {
+			Log.e("neterror", e.toString());
+		} catch (SAXException e) {			
+		} catch (ParserConfigurationException e) {		
 		}
+		return null;
 		
 	}
 	
@@ -64,6 +73,10 @@ public class NagiosStatusClient {
 		Vector<String> entries = new Vector<String>();
 		
 		Document doc = getStatus();
+		
+		if (doc == null) {
+			return new String[0];
+		}
 		
 		Element el = doc.getDocumentElement();
 		NodeList nodelist = el.getChildNodes();
