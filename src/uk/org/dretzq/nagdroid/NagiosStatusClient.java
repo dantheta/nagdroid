@@ -24,7 +24,8 @@ import android.util.Log;
 public class NagiosStatusClient {
 	private String url = "";
 	private String username = "";
-	private String password = "";
+	private String password = ""; 
+
 	
 	public NagiosStatusClient(String pUrl, String pUsername, String pPassword) {
 		url = pUrl;
@@ -69,13 +70,13 @@ public class NagiosStatusClient {
 		
 	}
 	
-	public String[] getHosts() {
-		Vector<String> entries = new Vector<String>();
+	public HostData[] getHosts() {
+		Vector<HostData> entries = new Vector<HostData>();
 		
 		Document doc = getStatus();
 		
 		if (doc == null) {
-			return new String[0];
+			return new HostData[0];
 		}
 		
 		Element el = doc.getDocumentElement();
@@ -85,9 +86,25 @@ public class NagiosStatusClient {
 			Node node = nodelist.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				Element child = (Element) node;
-				entries.add( child.getAttribute("name") );
+				
+				NodeList servicenodelist = child.getChildNodes();
+				Vector<ServiceData> servicedata = new Vector<ServiceData>();
+				for (int j = 0; j < servicenodelist.getLength(); j ++) {
+					Node servicenode = servicenodelist.item(j);
+					if (servicenode.getNodeType() == Node.ELEMENT_NODE) {
+						Element servicechild = (Element) servicenode;
+						servicedata.add( new ServiceData( 
+								servicechild.getAttribute("name"), 
+								servicechild.getAttribute("output"), 
+								Integer.parseInt(servicechild.getAttribute("state"))								
+								));
+					}										
+				}
+				
+				entries.add( new HostData(child.getAttribute("name"), servicedata.toArray(new ServiceData[0]) ) );
+							
 			}
 		}
-		return entries.toArray(new String[0]);
+		return entries.toArray(new HostData[0]);
 	}
 }
