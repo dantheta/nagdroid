@@ -19,6 +19,11 @@ public class ServiceData {
 		return mOutput;
 	}
 	
+	public int getState() {
+		return mState;
+	}
+	
+	
 	public String toString() {
 		return mName;
 	}

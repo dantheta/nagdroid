@@ -2,6 +2,7 @@ package uk.org.dretzq.nagdroid;
 
 import android.app.ExpandableListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -53,7 +54,11 @@ public class StatusActivity extends ExpandableListActivity {
 	    case R.id.refresh:
 	    	refreshData();
 	    	return true;
-	   
+	    case R.id.settings:
+	    	Intent intent = new Intent();
+	    	intent.setClassName("uk.org.dretzq.nagdroid", "uk.org.dretzq.nagdroid.SettingsActivity");
+	    	startActivity(intent);
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
@@ -88,7 +93,7 @@ public class StatusActivity extends ExpandableListActivity {
         public TextView getGenericView() {
             // Layout parameters for the ExpandableListView
             AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT, 48);
+                    ViewGroup.LayoutParams.FILL_PARENT, 32);
 
             TextView textView = new TextView(StatusActivity.this);
             textView.setLayoutParams(lp);
@@ -106,7 +111,16 @@ public class StatusActivity extends ExpandableListActivity {
                     LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     v = vi.inflate(R.layout.service, null);
                 }
+                
                 ServiceData child = mHosts[groupPosition].getService(childPosition);
+                /* int bg;
+                switch (child.getState()) {
+                case 1: bg=0x0088EE; break;
+                case 2: bg=0x0033FF; break;
+                default: bg=0; break;
+                };
+                v.setBackgroundColor(bg);*/
+                
                 TextView v_name = (TextView) v.findViewById(R.id.name);
                 TextView v_output = (TextView) v.findViewById(R.id.output);
                 if (v_name != null) {

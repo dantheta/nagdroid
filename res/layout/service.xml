@@ -8,14 +8,14 @@
 <TextView 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="2dp"
+    android:padding="8dp"
     android:textSize="16sp" 
     android:id="@+id/name">
 </TextView>
 <TextView 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="2dp"
+    android:padding="8dp"
     android:textSize="10sp" 
     android:id="@+id/output">
 </TextView>
