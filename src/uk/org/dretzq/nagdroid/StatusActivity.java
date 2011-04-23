@@ -3,6 +3,7 @@ package uk.org.dretzq.nagdroid;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,14 +25,28 @@ public class StatusActivity extends ExpandableListActivity {
 	ExpandableListAdapter mListAdapter;
 	
 	NagiosStatusClient client;
+
+	NagiosPreferences mPrefs;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        client = new NagiosStatusClient();
+        reloadPrefs();
+
+
+    }
+    
+    public void reloadPrefs() {
+        SharedPreferences prefs = getSharedPreferences("uk.org.dretzq.NagDroid", MODE_PRIVATE);
+        mPrefs = new NagiosPreferences();
+        mPrefs.load(prefs);
         
-        refreshData();
+        if (mPrefs.isOK()){
+        	client = new NagiosStatusClient(mPrefs.getUrl(), mPrefs.getUsername(), mPrefs.getPassword());
+        
+        	refreshData();
+        }
     }
     
     public void refreshData() {
@@ -57,14 +72,18 @@ public class StatusActivity extends ExpandableListActivity {
 	    case R.id.settings:
 	    	Intent intent = new Intent();
 	    	intent.setClassName("uk.org.dretzq.nagdroid", "uk.org.dretzq.nagdroid.SettingsActivity");
-	    	startActivity(intent);
+	    	startActivityForResult(intent, 7101);
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
 
-    
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (requestCode == 7101 && resultCode == RESULT_OK) {
+    		reloadPrefs();
+    	}
+    }
     
     public class NagiosStatusExpandableListAdapter extends BaseExpandableListAdapter {
     
