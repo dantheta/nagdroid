@@ -1,8 +1,10 @@
 package uk.org.dretzq.nagdroid;
 
 import android.app.ExpandableListActivity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,10 +30,10 @@ public class StatusActivity extends ExpandableListActivity {
         
         client = new NagiosStatusClient();
         
-        RefreshData();
+        refreshData();
     }
     
-    public void RefreshData() {
+    public void refreshData() {
     	HostData[] hosts = client.getHosts();
         mListAdapter = new NagiosStatusExpandableListAdapter(hosts);        
         setListAdapter(mListAdapter);
@@ -86,7 +88,7 @@ public class StatusActivity extends ExpandableListActivity {
         public TextView getGenericView() {
             // Layout parameters for the ExpandableListView
             AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT, 64);
+                    ViewGroup.LayoutParams.FILL_PARENT, 48);
 
             TextView textView = new TextView(StatusActivity.this);
             textView.setLayoutParams(lp);
@@ -97,12 +99,34 @@ public class StatusActivity extends ExpandableListActivity {
             return textView;
         }
 
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, 
+        		View convertView, ViewGroup parent) {
+                View v = convertView;
+                if (v == null) {
+                    LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    v = vi.inflate(R.layout.service, null);
+                }
+                ServiceData child = mHosts[groupPosition].getService(childPosition);
+                TextView v_name = (TextView) v.findViewById(R.id.name);
+                TextView v_output = (TextView) v.findViewById(R.id.output);
+                if (v_name != null) {
+                      v_name.setText(child.getName());                            
+                }
+                if(v_output != null){
+                      v_output.setText(child.getOutput());
+                }
+                return v;
+        }
+        
+        
+        /*
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                 View convertView, ViewGroup parent) {
-            TextView textView = getGenericView();
+            /*TextView textView = getGenericView();
             textView.setText(getChild(groupPosition, childPosition).toString());
-            return textView;
-        }
+            return textView; 
+        	
+        }*/
 
         public Object getGroup(int groupPosition) {
             return mHosts[groupPosition];

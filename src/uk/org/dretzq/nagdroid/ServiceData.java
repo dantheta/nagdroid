@@ -11,6 +11,14 @@ public class ServiceData {
 		mState = state;
 	}
 	
+	public String getName() {
+		return mName;
+	}
+	
+	public String getOutput() {
+		return mOutput;
+	}
+	
 	public String toString() {
 		return mName;
 	}
