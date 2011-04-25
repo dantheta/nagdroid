@@ -1,10 +1,11 @@
+#!/usr/bin/env python2.5
 
 import time
 import pprint
 import xml.etree.ElementTree as et
 
-#NAGIOS_STATUS_PATH = '/usr/local/nagios/var/status.dat'
-NAGIOS_STATUS_PATH = 'status.dat'
+NAGIOS_STATUS_PATH = '/usr/local/nagios/var/status.dat'
+#NAGIOS_STATUS_PATH = 'status.dat'
 
 HOSTS = {}
 
@@ -34,7 +35,7 @@ def print_xml():
 	doc  = et.Element('status')
 	for host, hostdata in HOSTS.iteritems():
 
-		if not len([ x['current_state'] for x in hostdata.itervalues() if x['current_state'] != '0' ]):
+		if not len([ x for x in hostdata.itervalues() if x['current_state'] != '0' ]):
 			continue
 
 		host_el = et.Element('host')
@@ -53,6 +54,9 @@ def print_xml():
 				'last_ok': cvt_time(data['last_time_ok']),
 			})
 			host_el.append(srv_el)
+
+		host_el.attrib['warning'] = str(len([ x for x in hostdata.itervalues() if x['current_state'] == '1']))
+		host_el.attrib['critical'] = str(len([ x for x in hostdata.itervalues() if x['current_state'] == '2']))
 		doc.append(host_el)
 	print et.tostring(doc)
 
