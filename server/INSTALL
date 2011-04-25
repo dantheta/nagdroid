@@ -1,0 +1,10 @@
+
+Copy the nagios-xml.cgi file to your nagios cgi-bin directory.
+
+Edit nagios-xml.cgi to contain the correct paths to python (min. version 2.5), and the nagios status.dat file.
+
+Make executable.  You should now be able to view the nagios status as xml at:
+
+http://www.example.com/path/to/nagios/cgi-bin/nagios-xml.cgi
+
+This path should be entered as the Nagios URL in the settings dialog in the Android app.

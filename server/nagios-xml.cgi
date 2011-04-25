@@ -5,7 +5,6 @@ import pprint
 import xml.etree.ElementTree as et
 
 NAGIOS_STATUS_PATH = '/usr/local/nagios/var/status.dat'
-#NAGIOS_STATUS_PATH = 'status.dat'
 
 HOSTS = {}
 
