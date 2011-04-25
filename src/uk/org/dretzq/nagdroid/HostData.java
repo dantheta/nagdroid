@@ -2,7 +2,16 @@ package uk.org.dretzq.nagdroid;
 
 public class HostData {
 	String mName;
+	int mWarnings;
+	int mCriticals;
 	ServiceData[] mServices = null;
+	
+	public HostData(String name, ServiceData[] services, int warnings, int criticals) {
+		mName = name;
+		mServices = services;
+		mWarnings = warnings;
+		mCriticals = criticals;
+	}
 	
 	public HostData(String name, ServiceData[] services) {
 		mName = name;
@@ -30,5 +39,13 @@ public class HostData {
 	
 	public ServiceData getService(int pos) {
 		return mServices[pos];
+	}
+	
+	public int getWarningCount() {
+		return mWarnings;
+	}
+	
+	public int getCriticalCount() {
+		return mCriticals;		
 	}
 }

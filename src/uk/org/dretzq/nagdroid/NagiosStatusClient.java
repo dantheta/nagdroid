@@ -101,7 +101,14 @@ public class NagiosStatusClient {
 					}										
 				}
 				
-				entries.add( new HostData(child.getAttribute("name"), servicedata.toArray(new ServiceData[0]) ) );
+				entries.add( 
+						new HostData(
+								child.getAttribute("name"), 
+								servicedata.toArray(new ServiceData[0]),
+								Integer.parseInt(child.getAttribute("warning")), 
+								Integer.parseInt(child.getAttribute("critical"))
+								) 
+						);
 							
 			}
 		}
