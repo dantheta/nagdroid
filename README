@@ -1,0 +1,16 @@
+
+NagDroid
+by Daniel Ramsay (daniel@dretzq.org.uk)
+
+NagDroid is a simple frontend for Nagios, which shows a minimalist view of a
+system's status, formatted for a small screen using regular Android widgets.
+
+It's very basic at the moment, but I'm hoping to improve the layout and design
+very soon.
+
+The app can be built and installed onto any Android device.  There is a
+server-side python script which reformat's Nagios' status.dat file into XML,
+which needs to be installed onto the nagios server.  This saves a lot of screen
+scraping effort.
+
+NagDroid is licensed under the GPL version 3.
