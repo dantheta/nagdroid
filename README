@@ -1,6 +1,6 @@
 
 NagDroid
-by Daniel Ramsay (daniel@dretzq.org.uk)
+by Daniel Ramsay
 
 NagDroid is a simple frontend for Nagios, which shows a minimalist view of a
 system's status, formatted for a small screen using regular Android widgets.
